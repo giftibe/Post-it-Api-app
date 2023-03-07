@@ -11,9 +11,9 @@ class userService {
         return await Users.find();
     }
 
-    async getAUser(id) {
+    async getAUser(filter) {
         //get a single user with id
-        return await Users.findById(id);
+        return await Users.findById(filter);
     }
 
     async updateAuser(id, data) {
