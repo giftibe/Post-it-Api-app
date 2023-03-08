@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const opts = {
+    timestamps: {
+        createdAt: 'created_at',
+        updatedAt: 'updated_at',
+    },
+};
 
 const commentSchema = new Schema({
     comments: {
@@ -20,24 +26,23 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true,
-        trim: true,
+        opts
     },
 
-    // icon: {
+    // username: {
     //     type: String,
     //     unique: true,
     //     trim: true,
     // },
 
-    // postit: {
-    //     type: String,
-    //     trim: true,
-    //     _id:true,
-    //     createdOn: {
-    //         type: Date,
-    //         default: Date.now,
-    //     },
-    // },
+    postit: {
+        type: String,
+        trim: true,
+        minlength: 1,
+        maxlength: 200,
+        timestamps:true
+    },
+    
 
     // comment: {
     //     type: String,
@@ -62,4 +67,3 @@ const Comment = mongoose.model('comment', commentSchema);
 const Post = mongoose.model('post', postSchema);
 const Users = mongoose.model('user', userSchema);
 module.exports = { Users };
-

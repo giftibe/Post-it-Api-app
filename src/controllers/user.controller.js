@@ -5,34 +5,41 @@ const {
     updateAuser,
     deleteAuser,
 } = require('../services/user.service');
-const { Users } = require('../postit.models/models');
+const bcrypt = require('bcrypt');
+const Users = require('../postit.models/models')
 const { MESSAGES } = require('../messages/messages');
 
 class userController {
     async createAUser(req, res) {
-        // checking if the user exist
         try {
-            const reqbody = req.body.email;
-            let existingUser = await getAllUsers();
+            const email = req.body.email;
 
-            //if this user exist
-            if (existingUser == req.body.email) {
+            const findAllUser = await getAllUsers({ 
+                email: email });
+            if (findAllUser == email) {
                 res.status(500).send({
+                    message:"exists",
                     success: false,
-                    message: 'exist already',
                 });
             }
 
-            const newUser = await createUser(req.body);
-            res.status(201).send({
-                message: MESSAGES.CREATED,
-                success: true,
-                data: newUser,
-            });
+            const saltRounds = 10;
+            const salt = await bcrypt.genSalt(saltRounds);
+            const hashedPassword = await bcrypt.hash(req.body.password, salt);
+            res.send(
+            await createUser({
+                email: req.body.email,
+                password: hashedPassword,
+                role: req.body.role,
+            }));
         } catch (err) {
-            res.status(500).send({ message: MESSAGES.DUPLICATE, success: false });
+            res.status(500).send({
+                message:MESSAGES.DUPLICATE,
+                success: false,
+            });
         }
     }
+
 
     //get a single user
     async fetchAUser(req, res) {
@@ -101,7 +108,7 @@ class userController {
                 data: change,
             });
         } catch (err) {
-            res.status(500).send({
+            res.status(401).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });

@@ -8,7 +8,7 @@ class userService {
 
     async getAllUsers() {
         //fetch all users
-        return await Users.find({});
+        return await Users.find();
     }
 
     async getAUser(id) {
