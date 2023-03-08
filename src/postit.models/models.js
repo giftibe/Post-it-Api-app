@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const commentSchema = new Schema({
     comments: {
@@ -17,35 +17,33 @@ const userSchema = new Schema({
         unique: true,
         trim: true,
     },
-
-    passsword: {
+    password: {
         type: String,
         required: true,
         trim: true,
     },
 
-    icon: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-    },
+    // icon: {
+    //     type: String,
+    //     unique: true,
+    //     trim: true,
+    // },
 
-    postit: {
-        type: String,
-        trim: true,
-        _id:true,
-        createdOn: {
-            type: Date,
-            default: Date.now,
-        },
-    },
+    // postit: {
+    //     type: String,
+    //     trim: true,
+    //     _id:true,
+    //     createdOn: {
+    //         type: Date,
+    //         default: Date.now,
+    //     },
+    // },
 
-    comment: {
-        type: String,
-        trim: true,
-        _id:true
-    },
+    // comment: {
+    //     type: String,
+    //     trim: true,
+    //     _id:true
+    // },
 });
 
 const postSchema = new Schema({
@@ -63,5 +61,5 @@ const postSchema = new Schema({
 const Comment = mongoose.model('comment', commentSchema);
 const Post = mongoose.model('post', postSchema);
 const Users = mongoose.model('user', userSchema);
+module.exports = { Users };
 
-module.exports = { Comment, Post, Users };

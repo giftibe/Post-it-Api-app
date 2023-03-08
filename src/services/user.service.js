@@ -8,12 +8,12 @@ class userService {
 
     async getAllUsers() {
         //fetch all users
-        return await Users.find();
+        return await Users.find({});
     }
 
-    async getAUser(filter) {
-        //get a single user with id
-        return await Users.findById(filter);
+    async getAUser(id) {
+        //get a single user by id
+        return await Users.findById(id);
     }
 
     async updateAuser(id, data) {

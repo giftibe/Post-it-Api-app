@@ -1,18 +1,22 @@
+//PACKAGES
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv');
-dotenv.config();
+const bodyParser = require('body-parser');
+
+const router = require('./src/routes/index.routes');
+require('dotenv').config();
 const cors = require('cors');
+
+//IMPORTS
+const database = require('./src/db');
 app.use(cors());
 app.use(express.json());
+const PORT = process.env.PORT || 3000;
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const { Comment, Post, Users } = require('./src/postit.models/models');
-const database = require('./src/db');
+app.use('/api', router);
 
-const port = process.env.port || 6969;
-
-
-app.listen(port, () => {
-    console.log(`app listening on port ${port}`);
+app.listen(PORT, () => {
+    console.log(`app listening on port ${PORT}`);
     database();
 });
