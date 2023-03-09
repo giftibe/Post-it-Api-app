@@ -2,22 +2,21 @@ const {
     createUser,
     getAUser,
     getAllUsers,
-    updateAuser,
-    deleteAuser,
+    updateAUser,
+    deleteAUser,
     getAUserByEmail,
 } = require('../services/user.service');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const Users = require('../postit.models/user.model');
-const { MESSAGES } = require('../messages/messages');
+const { MESSAGES } = require('../messages/user.message');
 const generateRandomAvatar = require('../utils/avatar.js');
 class userController {
     async createAUser(req, res) {
         try {
             const findAUser = await getAUserByEmail({ email: req.body.email });
             if (!findAUser) {
-                // generateRandomAvatar(req.body.email)
-                // console.log(req.body.email);
                 const saltRounds = 10;
                 const salt = await bcrypt.genSalt(saltRounds);
                 const hashedPassword = await bcrypt.hash(
@@ -25,13 +24,23 @@ class userController {
                     salt
                 );
                 const avatar = generateRandomAvatar(req.body.email);
+                jwt.sign(
+                    { email: req.body.email, password: hashedPassword },
+                    process.env.SECRET_KEY,
+                    (error, token) => {
+                        res.json({
+                            message: MESSAGES.REGISTERED,
+                            success: true,
+                            token,
+                        });
+                    }
+                );
                 const user = await createUser({
                     email: req.body.email,
                     password: hashedPassword,
                     role: req.body.role,
                     avatarURL: avatar,
                 });
-                console.log(user);
                 res.status(200).send(user);
             }
             res.status(409).send({
@@ -97,8 +106,8 @@ class userController {
             const updateData = req.body;
 
             //check if the user to edit exist
-            const existingRoom = await getAUser(id);
-            if (!existingRoom) {
+            const existing = await getAUser(id);
+            if (!existing) {
                 res.status(404).send({
                     message: 'user does not exit',
                     success: false,
@@ -106,11 +115,11 @@ class userController {
             }
 
             //if user exists, edit/put it
-            const change = await updateAuser(id, updateData);
+            const change = await updateAUser(id, updateData);
             res.status(200).send({
                 message: MESSAGES.UPDATED,
                 success: true,
-                data: change,
+                data: updateData,
             });
         } catch (err) {
             res.status(401).send({
@@ -134,13 +143,7 @@ class userController {
                 });
             }
 
-            // if it exists
-            // const todelete = await getAUser(
-            //     id,
-            //     { isDeleted: true },
-            //     { new: true }
-            // );
-            await deleteAuser(id);
+            await deleteAUser(id);
             res.status(202).send({
                 message: MESSAGES.DELETED,
                 success: true,

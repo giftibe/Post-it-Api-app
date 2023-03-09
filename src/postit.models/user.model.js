@@ -20,31 +20,11 @@ const userSchema = new Schema(
             required: true,
         },
 
-        // username: {
-        //     type: String,
-        //     unique: true,
-        //     trim: true,
-        // },
-
-        // postit: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: 'post',
-        // },
-
-        // comment: {
-        //     type: Schema.Types.ObjectId,
-        //     ref: 'comment',
-        // },
 
         avatarURL: {
             type: String,
-            // immutable:true,
-            // default: function () {
-            //     const _email = this.email;
-            //     // console.log(this);
-            //     // console.log(_email + ' at model');
-            //     console.log( generateRandomAvatar(_email));
-            // },
+            immutable:true,
+
         },
 
         isDeleted: {
@@ -53,7 +33,7 @@ const userSchema = new Schema(
         },
     },
     { timestamps: true },
-    // { minimize: false }
+    { minimize: false }
 );
 
 //implemented soft-delete for users
