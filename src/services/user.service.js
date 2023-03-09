@@ -8,7 +8,7 @@ class userService {
 
     async getAllUsers() {
         //fetch all users
-        return await Users.find();
+        return await Users.find({ isDeleted: false });
     }
 
     async getAUser(id) {
@@ -21,12 +21,12 @@ class userService {
         return await Users.findOne(filter);
     }
 
-    async updateAuser(id, data) {
+    async updateAUser(id, data) {
         //update/replace a user by id
         return await Users.findOneAndReplace(id, data);
     }
 
-    async deleteAuser(id) {
+    async deleteAUser(id) {
         //delete a user by id
         return await Users.findByIdAndUpdate(id, { isDeleted: true });
     }

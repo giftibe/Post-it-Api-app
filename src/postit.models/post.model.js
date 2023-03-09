@@ -7,7 +7,7 @@ const postSchema = new Schema(
             type: String,
             trim: true,
             minlength: 1,
-            maxlength: 50,
+            maxlength: 150,
             date: { type: Date, default: Date.now },
             // id: mongoose.Types.ObjectId,
         },
@@ -20,6 +20,7 @@ const postSchema = new Schema(
     { timestamps: true },
     { minimize: false }
 );
+
 //implemented soft-delete for post
 postSchema.pre('remove', function (next) {
     this.isDeleted = false;

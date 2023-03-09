@@ -38,11 +38,11 @@ const getRandomAvatarStyle = () => {
     return randomString;
 };
 
-const generateRandomAvatar=(email)=>{
+const generateRandomAvatar = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     const _email = email.replaceAll(' ', '');
-    // console.log(_email + 'at avatar');
+
     const isValidEmail = emailRegex.test(_email);
     if (!isValidEmail) {
         throw new Error('Invalid email');
@@ -58,7 +58,7 @@ const generateRandomAvatar=(email)=>{
     }
 
     const avatarUrl = `https://api.dicebear.com/5.x/${randomAvatarStyle}/svg?seed=${seed}&size=200&radius=50`;
-    console.log(avatarUrl + ' at seed');
+
     return avatarUrl;
 };
 // @_learnable
