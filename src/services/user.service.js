@@ -16,6 +16,11 @@ class userService {
         return await Users.findById(id);
     }
 
+    async getAUserByEmail(filter) {
+        //get a single user by id
+        return await Users.findOne(filter);
+    }
+
     async updateAuser(id, data) {
         //update/replace a user by id
         return await Users.findOneAndReplace(id, data);

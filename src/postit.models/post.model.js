@@ -7,7 +7,9 @@ const postSchema = new Schema(
             type: String,
             trim: true,
             minlength: 1,
-            maxlength: 200,
+            maxlength: 50,
+            date: { type: Date, default: Date.now },
+            // id: mongoose.Types.ObjectId,
         },
 
         comment: {
@@ -15,10 +17,11 @@ const postSchema = new Schema(
             ref: 'user',
         },
     },
-    { timestamps: true }
+    { timestamps: true },
+    { minimize: false }
 );
 //implemented soft-delete for post
-userSchema.pre('remove', function (next) {
+postSchema.pre('remove', function (next) {
     this.isDeleted = false;
     this.save();
     next();

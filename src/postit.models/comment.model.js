@@ -6,14 +6,14 @@ const commentSchema = new Schema(
         comments: {
             type: String,
             trim: true,
-            _id: ObjectId,
         },
     },
-    { timestamps: true }
+    { timestamps: true },
+    { minimize: false }
 );
 
 //implemented soft-delete for comment
-userSchema.pre('remove', function (next) {
+commentSchema.pre('remove', function (next) {
     this.isDeleted = false;
     this.save();
     next();
