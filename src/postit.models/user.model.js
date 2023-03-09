@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const generateRandomAvatar = require('../utils/avatar.js');
+const post = require('./post.model');
+const comment = require('./comment.model');
 const Schema = mongoose.Schema;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
@@ -17,31 +20,40 @@ const userSchema = new Schema(
             required: true,
         },
 
-        username: {
-            type: String,
-            unique: true,
-            trim: true,
-        },
+        // username: {
+        //     type: String,
+        //     unique: true,
+        //     trim: true,
+        // },
 
-        postit: {
-            type: String,
-            trim: true,
-            minlength: 1,
-            maxlength: 200,
-        },
+        // postit: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'post',
+        // },
 
         // comment: {
-        //     type: String,
-        //     trim: true,
-        //     _id:true
+        //     type: Schema.Types.ObjectId,
+        //     ref: 'comment',
         // },
+
+        avatarURL: {
+            type: String,
+            // immutable:true,
+            // default: function () {
+            //     const _email = this.email;
+            //     // console.log(this);
+            //     // console.log(_email + ' at model');
+            //     console.log( generateRandomAvatar(_email));
+            // },
+        },
 
         isDeleted: {
             type: Boolean,
             default: false,
         },
     },
-    { timestamps: true }
+    { timestamps: true },
+    // { minimize: false }
 );
 
 //implemented soft-delete for users

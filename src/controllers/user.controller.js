@@ -4,41 +4,45 @@ const {
     getAllUsers,
     updateAuser,
     deleteAuser,
+    getAUserByEmail,
 } = require('../services/user.service');
 const bcrypt = require('bcrypt');
+
 const Users = require('../postit.models/user.model');
 const { MESSAGES } = require('../messages/messages');
-
+const generateRandomAvatar = require('../utils/avatar.js');
 class userController {
     async createAUser(req, res) {
         try {
-            const email = req.body.email;
-
-            const findAllUser = await getAllUsers({
-                email: email,
-            });
-            if (findAllUser == email) {
-                res.status(500).send({
-                    message: 'exists already',
-                    success: false,
-                });
-            }
-
-            const saltRounds = 10;
-            const salt = await bcrypt.genSalt(saltRounds);
-            const hashedPassword = await bcrypt.hash(req.body.password, salt);
-            res.send(
-                await createUser({
+            const findAUser = await getAUserByEmail({ email: req.body.email });
+            if (!findAUser) {
+                // generateRandomAvatar(req.body.email)
+                // console.log(req.body.email);
+                const saltRounds = 10;
+                const salt = await bcrypt.genSalt(saltRounds);
+                const hashedPassword = await bcrypt.hash(
+                    req.body.password,
+                    salt
+                );
+                const avatar = generateRandomAvatar(req.body.email);
+                const user = await createUser({
                     email: req.body.email,
                     password: hashedPassword,
                     role: req.body.role,
-                })
-            );
-        } catch (err) {
-            res.status(500).send({
-                message: MESSAGES.DUPLICATE,
+                    avatarURL: avatar,
+                });
+                console.log(user);
+                res.status(200).send(user);
+            }
+            res.status(409).send({
+                message: 'exists alreadyy',
                 success: false,
             });
+        } catch (err) {
+            return {
+                message: err.message,
+                success: false,
+            };
         }
     }
 
