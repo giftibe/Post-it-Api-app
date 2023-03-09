@@ -6,7 +6,7 @@ const {
     deleteAuser,
 } = require('../services/user.service');
 const bcrypt = require('bcrypt');
-const Users = require('../postit.models/models')
+const Users = require('../postit.models/user.model');
 const { MESSAGES } = require('../messages/messages');
 
 class userController {
@@ -14,11 +14,12 @@ class userController {
         try {
             const email = req.body.email;
 
-            const findAllUser = await getAllUsers({ 
-                email: email });
+            const findAllUser = await getAllUsers({
+                email: email,
+            });
             if (findAllUser == email) {
                 res.status(500).send({
-                    message:"exists",
+                    message: 'exists already',
                     success: false,
                 });
             }
@@ -27,19 +28,19 @@ class userController {
             const salt = await bcrypt.genSalt(saltRounds);
             const hashedPassword = await bcrypt.hash(req.body.password, salt);
             res.send(
-            await createUser({
-                email: req.body.email,
-                password: hashedPassword,
-                role: req.body.role,
-            }));
+                await createUser({
+                    email: req.body.email,
+                    password: hashedPassword,
+                    role: req.body.role,
+                })
+            );
         } catch (err) {
             res.status(500).send({
-                message:MESSAGES.DUPLICATE,
+                message: MESSAGES.DUPLICATE,
                 success: false,
             });
         }
     }
-
 
     //get a single user
     async fetchAUser(req, res) {
@@ -121,8 +122,8 @@ class userController {
             const { id } = req.params;
 
             //check if user to delete exist
-            const existingRoom = await getAUser(id);
-            if (!existingRoom) {
+            const existing = await getAUser(id);
+            if (!existing) {
                 res.status(404).send({
                     message: 'user does not exit',
                     success: false,
@@ -130,6 +131,11 @@ class userController {
             }
 
             // if it exists
+            // const todelete = await getAUser(
+            //     id,
+            //     { isDeleted: true },
+            //     { new: true }
+            // );
             await deleteAuser(id);
             res.status(202).send({
                 message: MESSAGES.DELETED,

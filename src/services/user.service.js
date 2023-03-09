@@ -1,4 +1,4 @@
-const { Users } = require('../postit.models/models');
+const { Users } = require('../postit.models/user.model');
 
 class userService {
     async createUser(data) {
@@ -23,7 +23,7 @@ class userService {
 
     async deleteAuser(id) {
         //delete a user by id
-        return await Users.findByIdAndDelete(id);
+        return await Users.findByIdAndUpdate(id, { isDeleted: true });
     }
 }
 
