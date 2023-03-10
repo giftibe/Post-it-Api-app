@@ -9,7 +9,7 @@ const { MESSAGES } = require('../messages/comment.message');
 class commentController {
     async createAcomment(req, res) {
         try {
-            const newcomment = req.body.comment;
+            const newcomment = req.body;
             const myComment = await createComment(newcomment);
             res.status(200).send({
                 message: MESSAGES.CREATED,

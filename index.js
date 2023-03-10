@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', router);
 
+
 app.listen(PORT, () => {
     console.log(`app listening on port ${PORT}`);
     database();

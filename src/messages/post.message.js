@@ -6,6 +6,7 @@ const postMessage = {
         CREATED: 'post created successfully',
         DELETED: 'post deleted successfully',
         UNAUTHORIZED: 'Unauthorized information',
+        ABSENT: 'post does not exist',
     },
 };
 module.exports = postMessage;

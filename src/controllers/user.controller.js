@@ -24,6 +24,7 @@ class userController {
                     salt
                 );
                 const avatar = generateRandomAvatar(req.body.email);
+
                 jwt.sign(
                     { email: req.body.email, password: hashedPassword },
                     process.env.SECRET_KEY,
@@ -31,6 +32,7 @@ class userController {
                         res.json({
                             message: MESSAGES.REGISTERED,
                             success: true,
+                            avatarURL: avatar,
                             token,
                         });
                     }
@@ -38,7 +40,6 @@ class userController {
                 const user = await createUser({
                     email: req.body.email,
                     password: hashedPassword,
-                    role: req.body.role,
                     avatarURL: avatar,
                 });
                 res.status(200).send(user);
@@ -138,7 +139,7 @@ class userController {
             const existing = await getAUser(id);
             if (!existing) {
                 res.status(404).send({
-                    message: 'user does not exit',
+                    message: MESSAGES.ABSENT,
                     success: false,
                 });
             }
