@@ -108,7 +108,7 @@ class userController {
             //check if the user to edit exist
             const existing = await getAUser(id);
             if (!existing) {
-                res.status(404).send({
+                return res.status(404).send({
                     message: 'user does not exit',
                     success: false,
                 });

@@ -18,7 +18,7 @@ class postService {
 
     async updateAPost(id, data) {
         //update/replace a postit by id
-        return await Post.findOneAndReplace(id, data);
+        return await Post.findByIdAndReplace(id, data);
     }
 
     async deleteAPost(id) {

@@ -1,21 +1,20 @@
 const {
-    createPost,
-    getAllPost,
-    getAPost,
-    updateAPost,
-    deleteAPost,
-} = require('../services/post.service');
-const { MESSAGES } = require('../messages/post.message');
-
-class postController {
-    async createAPostit(req, res) {
+    createComment,
+    getAllComment,
+    getAComment,
+    updateAComment,
+    deleteAComment,
+} = require('../services/comment.service');
+const { MESSAGES } = require('../messages/comment.message');
+class commentController {
+    async createAcomment(req, res) {
         try {
-            const postit = req.body.postit;
-            const post = await createPost(postit);
+            const newcomment = req.body.comment;
+            const myComment = await createComment(newcomment);
             res.status(200).send({
                 message: MESSAGES.CREATED,
                 success: true,
-                post,
+                myComment,
             });
         } catch (err) {
             return {
@@ -25,13 +24,13 @@ class postController {
         }
     }
 
-    async getAllPostit(req, res) {
+    async getComments(req, res) {
         try {
-            const postit = await getAllPost();
+            const comment = await getAllComment();
             res.status(201).send({
                 message: MESSAGES.FETCHED,
                 success: true,
-                postit,
+                Comments: comment,
             });
         } catch (err) {
             res.status(500).send({
@@ -42,14 +41,14 @@ class postController {
         }
     }
 
-    async getPostitById(req, res) {
+    async getcommentById(req, res) {
         try {
             const { id } = req.params;
-            const postit = await getAPost(id);
+            const getComment = await getAComment(id);
             res.status(201).send({
                 message: MESSAGES.FETCHED,
                 success: true,
-                postit,
+                getComment,
             });
         } catch (err) {
             res.status(500).send({
@@ -60,26 +59,26 @@ class postController {
         }
     }
 
-    async editAPostit(req, res) {
+    async editAcomment(req, res) {
         try {
             const { id } = req.params;
-            const updatePostit = req.body;
+            const updateComment = req.body;
 
-            //check if the postit to edit exist
-            const existing = await getAPost(id);
+            //check if the comment to edit exist
+            const existing = await getAComment(id);
             if (!existing) {
                 return res.status(404).send({
-                    message: 'post does not exit',
+                    message: 'comment does not exit',
                     success: false,
                 });
             }
 
-            //if postit exists, edit/put it
-            const change = await updateAPost(id, updatePostit);
+            //if comment exists, edit/put it
+            const change = await updateAComment(id, updateComment);
             res.status(200).send({
                 message: MESSAGES.UPDATED,
                 success: true,
-                data: updatePostit,
+                data: updateComment,
             });
         } catch (err) {
             res.status(401).send({
@@ -89,20 +88,20 @@ class postController {
         }
     }
 
-    async DeleteAPost(req, res) {
+    async DeleteAcomment(req, res) {
         try {
             const { id } = req.params;
 
-            //check if postit to delete exist
-            const existing = await getAPost(id);
+            //check if comment to delete exist
+            const existing = await getAComment(id);
             if (!existing) {
                 res.status(404).send({
-                    message: 'post does not exit',
+                    message: 'comment does not exit',
                     success: false,
                 });
             }
-
-            await deleteAPost(id);
+            //then delete
+            await deleteAComment(id);
             res.status(202).send({
                 message: MESSAGES.DELETED,
                 success: true,
@@ -116,4 +115,4 @@ class postController {
     }
 }
 
-module.exports = new postController();
+module.exports = new commentController();

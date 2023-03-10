@@ -9,7 +9,6 @@ const postSchema = new Schema(
             minlength: 1,
             maxlength: 150,
             date: { type: Date, default: Date.now },
-            // id: mongoose.Types.ObjectId,
         },
 
         comment: {

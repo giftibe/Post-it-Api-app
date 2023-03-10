@@ -7,7 +7,16 @@ const commentSchema = new Schema(
             type: String,
             trim: true,
         },
+        UserId: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+        },
+        PostId: {
+            type: Schema.Types.ObjectId,
+            ref: 'post',
+        },
     },
+
     { timestamps: true },
     { minimize: false }
 );
