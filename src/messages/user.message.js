@@ -10,6 +10,7 @@ const Message = {
         LOGIN: 'User logged in successfully',
         REGISTER: 'Please Register',
         UNAUTHORIZED: 'Unauthorized information',
+        ABSENT: 'User does not exist',
     },
 };
 module.exports = Message;

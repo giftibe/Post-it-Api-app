@@ -8,7 +8,7 @@ class postService {
 
     async getAllPost() {
         //fetch all postit
-        return await Post.find({ isDeleted: false });
+        return await Post.find({ isDeleted: false }).sort({ $natural: -1 });
     }
 
     async getAPost(id) {
@@ -18,7 +18,7 @@ class postService {
 
     async updateAPost(id, data) {
         //update/replace a postit by id
-        return await Post.findByIdAndReplace(id, data);
+        return await Post.findByIdAndUpdate(id, data);
     }
 
     async deleteAPost(id) {

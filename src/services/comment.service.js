@@ -7,7 +7,7 @@ class commentService {
 
     async getAllComment() {
         //fetch all Comment
-        return await Comment.find({ isDeleted: false });
+        return await Comment.find({ isDeleted: false }).sort({ $natural: -1 });
     }
 
     async getAComment(id) {

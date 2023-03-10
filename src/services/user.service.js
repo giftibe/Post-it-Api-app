@@ -8,7 +8,7 @@ class userService {
 
     async getAllUsers() {
         //fetch all users
-        return await Users.find({ isDeleted: false });
+        return await Users.find({ isDeleted: false }).sort({ $natural: -1 });
     }
 
     async getAUser(id) {

@@ -8,10 +8,10 @@ const {
     DeleteAPost,
 } = require('../controllers/post.controller');
 
-router.post('/post', createAPostit);
-router.get('/post', getAllPostit);
-router.delete('/post/:id', DeleteAPost);
-router.get('/post/:id', getPostitById);
-router.put('/post/:id', editAPostit);
+router.post('/posts', createAPostit);
+router.get('/posts', getAllPostit);
+router.delete('/posts/:id', DeleteAPost);
+router.get('/posts/:id', getPostitById);
+router.put('/posts/:id', editAPostit);
 
 module.exports = router;

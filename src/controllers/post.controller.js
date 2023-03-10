@@ -10,8 +10,8 @@ const { MESSAGES } = require('../messages/post.message');
 class postController {
     async createAPostit(req, res) {
         try {
-            const postit = req.body.postit;
-            const post = await createPost(postit);
+            const postits = req.body;
+            const post = await createPost(postits);
             res.status(200).send({
                 message: MESSAGES.CREATED,
                 success: true,
@@ -34,9 +34,8 @@ class postController {
                 postit,
             });
         } catch (err) {
-            res.status(500).send({
-                message: err.message,
-                //  || MESSAGES.ERROR,
+            return res.status(500).send({
+                message: MESSAGES.ABSENT,
                 success: false,
             });
         }
@@ -53,8 +52,7 @@ class postController {
             });
         } catch (err) {
             res.status(500).send({
-                message: err.message,
-                //  || MESSAGES.ERROR,
+                message: MESSAGES.ABSENT,
                 success: false,
             });
         }
@@ -69,7 +67,7 @@ class postController {
             const existing = await getAPost(id);
             if (!existing) {
                 return res.status(404).send({
-                    message: 'post does not exit',
+                    message: MESSAGES.ABSENT,
                     success: false,
                 });
             }
@@ -83,7 +81,7 @@ class postController {
             });
         } catch (err) {
             res.status(401).send({
-                message: err.message || MESSAGES.ERROR,
+                message: MESSAGES.ERROR,
                 success: false,
             });
         }
@@ -96,8 +94,8 @@ class postController {
             //check if postit to delete exist
             const existing = await getAPost(id);
             if (!existing) {
-                res.status(404).send({
-                    message: 'post does not exit',
+                return res.status(404).send({
+                    message: MESSAGES.ABSENT,
                     success: false,
                 });
             }
@@ -108,7 +106,7 @@ class postController {
                 success: true,
             });
         } catch (err) {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });

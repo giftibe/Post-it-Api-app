@@ -22,7 +22,6 @@ const userSchema = new Schema(
 
         avatarURL: {
             type: String,
-            immutable: true,
         },
 
         isDeleted: {
@@ -30,7 +29,7 @@ const userSchema = new Schema(
             default: false,
         },
     },
-    { immutable:true }
+    { immutable:true },
 );
 
 //implemented soft-delete for users
