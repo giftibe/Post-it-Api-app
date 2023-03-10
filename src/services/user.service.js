@@ -23,7 +23,7 @@ class userService {
 
     async updateAUser(id, data) {
         //update/replace a user by id
-        return await Users.findOneAndReplace(id, data);
+        return await Users.findByIdAndUpdate(id, data);
     }
 
     async deleteAUser(id) {
