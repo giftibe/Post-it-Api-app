@@ -8,12 +8,15 @@ class userService {
 
     async getAllUsers() {
         //fetch all users
-        return await Users.find({ isDeleted: false }).sort({ $natural: -1 });
+        return await Users.find(
+            { isDeleted: false },
+            { _id: 0, password: 0 }
+        ).sort({ $natural: -1 });
     }
 
     async getAUser(id) {
         //get a single user by id
-        return await Users.findById(id);
+        return await Users.findById(id,  { _id: 0, password: 0 });
     }
 
     async getAUserByEmail(filter) {

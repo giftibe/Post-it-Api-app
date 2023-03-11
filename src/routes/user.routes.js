@@ -1,5 +1,5 @@
 const express = require('express');
-const app = express()
+const verify = require('../authorization/auth')
 const router = express.Router();
 const {
     createAUser,
@@ -13,6 +13,6 @@ router.post('/users', createAUser);
 router.get('/users', fetchAllUser);
 router.delete('/users/:id', DeleteAUser);
 router.get('/users/:id', fetchAUser);
-router.put('/users/:id', editAUser);
+router.put('/users/:id',  editAUser);
 
 module.exports = router;

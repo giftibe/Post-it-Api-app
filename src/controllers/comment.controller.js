@@ -1,20 +1,36 @@
 const {
     createComment,
-    getAllComment,
+    getAllPostComment,
     getAComment,
     updateAComment,
     deleteAComment,
 } = require('../services/comment.service');
+const { getAPost } = require('../services/post.service');
+const { getAUser } = require('../services/user.service');
 const { MESSAGES } = require('../messages/comment.message');
 class commentController {
     async createAcomment(req, res) {
         try {
-            const newcomment = req.body;
-            const myComment = await createComment(newcomment);
-            res.status(200).send({
+            const { PostId } = req.params;
+            const checkId = await getAPost(PostId);
+            if (!checkId) {
+                return res.status(404).send({
+                    message: 'id not found',
+                    success: false,
+                });
+            }
+            const { comments } = req.body.comments;
+            const { UserId } = req.body;
+
+            const Comment = await createComment({
+                comments: req.body.comments,
+                PostId,
+                UserId,
+            });
+            return res.status(200).send({
                 message: MESSAGES.CREATED,
                 success: true,
-                myComment,
+                result: Comment,
             });
         } catch (err) {
             return {
@@ -24,10 +40,20 @@ class commentController {
         }
     }
 
-    async getComments(req, res) {
+    async getAllCommentsWithId(req, res) {
         try {
-            const comment = await getAllComment();
-            res.status(201).send({
+            const { PostId } = req.params;
+
+            const checkId = await getAPost(PostId);
+            if (!checkId) {
+                return res.status(404).send({
+                    message: 'id not found',
+                    success: false,
+                });
+            }
+
+            const comment = await getAllPostComment(req.params.id);
+            return res.status(201).send({
                 message: MESSAGES.FETCHED,
                 success: true,
                 Comments: comment,
@@ -43,12 +69,25 @@ class commentController {
 
     async getcommentById(req, res) {
         try {
-            const { id } = req.params;
-            const getComment = await getAComment(id);
+            const { PostId } = req.params;
+            const { ComId } = req.params;
+
+            //check if valid
+            const validPostId = await getAPost(PostId);
+            const validComId = await getAComment(ComId);
+
+            if (!validPostId && !validComId) {
+                res.status(404).send({
+                    message: 'invalid id',
+                    success: true,
+                });
+            }
+
+            const findComment = await getAComment(ComId);
             res.status(201).send({
                 message: MESSAGES.FETCHED,
                 success: true,
-                getComment,
+                data: findComment,
             });
         } catch (err) {
             res.status(500).send({
@@ -61,24 +100,27 @@ class commentController {
 
     async editAcomment(req, res) {
         try {
-            const { id } = req.params;
+            const { PostId } = req.params;
+            const { ComId } = req.params;
             const updateComment = req.body;
 
             //check if the comment to edit exist
-            const existing = await getAComment(id);
-            if (!existing) {
-                return res.status(404).send({
-                    message: 'comment does not exit',
+            const validPostId = await getAPost(PostId);
+            const validComId = await getAComment(ComId);
+
+            if (!validPostId && !validComId) {
+                res.status(404).send({
+                    message: 'invalid id',
                     success: false,
                 });
             }
 
             //if comment exists, edit/put it
-            const change = await updateAComment(id, updateComment);
+            const change = await updateAComment(ComId, updateComment);
             res.status(200).send({
                 message: MESSAGES.UPDATED,
                 success: true,
-                data: updateComment,
+                data: change,
             });
         } catch (err) {
             res.status(401).send({
@@ -89,29 +131,32 @@ class commentController {
     }
 
     async DeleteAcomment(req, res) {
-        try {
-            const { id } = req.params;
+        const { UserId } = req.params;
+        const { ComId } = req.params;
 
-            //check if comment to delete exist
-            const existing = await getAComment(id);
-            if (!existing) {
-                res.status(404).send({
-                    message: 'comment does not exit',
-                    success: false,
-                });
-            }
-            //then delete
-            await deleteAComment(id);
-            res.status(202).send({
-                message: MESSAGES.DELETED,
-                success: true,
-            });
-        } catch (err) {
-            res.status(500).send({
-                message: err.message || MESSAGES.ERROR,
+        //check if the id's exist
+        const validUserId = await getAUser(UserId);
+        const validComId = await getAComment(ComId);
+
+        if (!validUserId && !validComId) {
+            res.status(404).send({
+                message: 'invalid id',
                 success: false,
             });
         }
+
+        //if comment exists, delete it
+        const change = await deleteAComment(ComId);
+        res.status(200).send({
+            message: MESSAGES.DELETED,
+            success: true,
+        });
+    }
+    catch(err) {
+        res.status(401).send({
+            message: err.message || MESSAGES.ERROR,
+            success: false,
+        });
     }
 }
 

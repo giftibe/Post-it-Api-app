@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const commentRoute = require('./comment.routes');
 const {
     createAPostit,
     getAllPostit,
@@ -8,10 +9,11 @@ const {
     DeleteAPost,
 } = require('../controllers/post.controller');
 
-router.post('/posts', createAPostit);
-router.get('/posts', getAllPostit);
-router.delete('/posts/:id', DeleteAPost);
-router.get('/posts/:id', getPostitById);
-router.put('/posts/:id', editAPostit);
+router.post('/', createAPostit);
+router.get('/:id', getPostitById);
+router.put('/:id', editAPostit);
+router.get('/', getAllPostit);
+router.delete('/:id', DeleteAPost);
+router.use(commentRoute);
 
 module.exports = router;

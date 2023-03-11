@@ -70,7 +70,7 @@ class userController {
                 });
             }
 
-            res.status(200).send({
+            res.status(200).json({
                 message: MESSAGES.FETCHED,
                 success: true,
                 existing,

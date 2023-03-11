@@ -18,8 +18,10 @@ const verifyToken = async (req, res, next) => {
         // req.user = decoded;
         const email = decoded.email;
         const password = decoded.email;
+        console.log(email);
+        console.log(password);
+        const user = await Users.findOne(email);
 
-        const user = await Users.findOne({ email });
 
         if (!user) {
             return res.status(401).send('Invalid token');
