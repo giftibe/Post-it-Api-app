@@ -1,4 +1,6 @@
 const { Users } = require('../postit.models/user.model');
+const { post } = require('../postit.models/post.model');
+const { getAllPost } = require('../services/post.service');
 
 class userService {
     async createUser(data) {
@@ -21,12 +23,17 @@ class userService {
 
     async getByUserName(data) {
         //get a single user by userName
-        return await Users.findOne(data, { _id: 0, password: 0 });
+        return await Users.findOne(data, { _id: 1, password: 0 });
     }
 
     async getAUserByEmail(filter) {
         //get a single user by id
         return await Users.findOne(filter, { _id: 0, password: 0 });
+    }
+
+    async getAllpostByUserName(filter) {
+        //finds all the post associated with the filter.
+        return await getAllPost(filter);
     }
 
     async updateAUser(id, data) {

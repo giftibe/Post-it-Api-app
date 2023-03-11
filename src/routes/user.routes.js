@@ -7,11 +7,12 @@ const {
     fetchAllUser,
     editAUser,
     DeleteAUser,
+    fetchAllpostByUserName,
 } = require('../controllers/user.controller');
 
 router.post('/users', createAUser);
 router.get('/users', fetchAllUser);
-// router.get('/users/:userName', fetchAllUser);
+router.get('/users/:id/posts', fetchAllpostByUserName);
 router.delete('/users/:id', DeleteAUser);
 router.get('/users/:id', fetchAUser);
 router.put('/users/:id',  editAUser);
