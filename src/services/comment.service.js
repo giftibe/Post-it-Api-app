@@ -6,7 +6,7 @@ class commentService {
     }
 
     async getAllPostComment(id) {
-        //this get all the comment with a particular id arranged in its newest
+        //this gets all the comment with a particular id arranged in its newest
         return await Comment.find({ id: { $exists: true } }).sort({
             $natural: -1,
         });

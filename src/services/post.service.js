@@ -21,8 +21,6 @@ class postService {
         return await Post.findByIdAndUpdate(id, data);
     }
 
-
-
     async deleteAPost(id) {
         //delete a postit by id
         return await Post.findByIdAndUpdate(id, { isDeleted: true });

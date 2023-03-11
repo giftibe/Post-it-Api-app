@@ -6,6 +6,7 @@ const {
     getByUserName,
     deleteAUser,
     getAUserByEmail,
+    getAllpostByUserName,
 } = require('../services/user.service');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -67,7 +68,7 @@ class userController {
     async fetchAUser(req, res) {
         try {
             const inputId = req.params.id;
-
+            //check if the id has @ attached to it and remove it
             const firstChar = inputId.charAt(0);
             if (firstChar == '@') {
                 const removedAt = inputId.slice(1);
@@ -75,7 +76,6 @@ class userController {
 
                 //check if the userName exists
                 const checkUserName = await getByUserName({ strRemovedAt });
-
                 if (checkUserName) {
                     return res.status(200).send({
                         message: 'found',
@@ -106,7 +106,48 @@ class userController {
         } catch (err) {
             return res.status(500).send({
                 message: err,
-                // .message || MESSAGES.ERROR,
+                success: false,
+            });
+        }
+    }
+
+    async fetchAllpostByUserName(req, res) {
+        try {
+            const inputId = req.params.id;
+
+            //checks if the id has @ attached to it and remove it
+            const firstChar = inputId.charAt(0);
+            if (firstChar == '@') {
+                const removedAt = inputId.slice(1);
+                const strRemovedAt = '' + removedAt;
+
+                //check if the userName exists
+                const checkUser = await getByUserName({ strRemovedAt });
+                const getId = checkUser['_id'];
+                // convert to string
+                const idString = getId.toString();
+
+                if (checkUser) {
+
+                    // find all the post with the userId
+                    const getAllpostByUser = await getAllpostByUserName(
+                        idString
+                    );
+                    return res.status(200).send({
+                        message: 'found',
+                        success: true,
+                        posts: getAllpostByUser,
+                    });
+                } else {
+                    return res.status(404).send({
+                        message: 'username does not exist',
+                        success: false,
+                    });
+                }
+            }
+        } catch (err) {
+            return res.status(500).send({
+                message: err,
                 success: false,
             });
         }
