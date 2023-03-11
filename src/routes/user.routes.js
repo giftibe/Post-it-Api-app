@@ -11,6 +11,7 @@ const {
 
 router.post('/users', createAUser);
 router.get('/users', fetchAllUser);
+// router.get('/users/:userName', fetchAllUser);
 router.delete('/users/:id', DeleteAUser);
 router.get('/users/:id', fetchAUser);
 router.put('/users/:id',  editAUser);

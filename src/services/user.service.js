@@ -16,12 +16,17 @@ class userService {
 
     async getAUser(id) {
         //get a single user by id
-        return await Users.findById(id,  { _id: 0, password: 0 });
+        return await Users.findById(id, { _id: 0, password: 0 });
+    }
+
+    async getByUserName(data) {
+        //get a single user by userName
+        return await Users.findOne(data, { _id: 0, password: 0 });
     }
 
     async getAUserByEmail(filter) {
         //get a single user by id
-        return await Users.findOne(filter);
+        return await Users.findOne(filter, { _id: 0, password: 0 });
     }
 
     async updateAUser(id, data) {
