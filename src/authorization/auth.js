@@ -22,7 +22,6 @@ const verifyToken = async (req, res, next) => {
         console.log(password);
         const user = await Users.findOne(email);
 
-
         if (!user) {
             return res.status(401).send('Invalid token');
         }

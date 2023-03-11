@@ -20,6 +20,15 @@ const userSchema = new Schema(
             required: true,
         },
 
+        username: {
+            type: String,
+            required: true,
+            trim: true,
+            minlength: 1,
+            maxlength: 10,
+            unique:true
+        },
+
         avatarURL: {
             type: String,
         },
@@ -29,7 +38,7 @@ const userSchema = new Schema(
             default: false,
         },
     },
-    { immutable:true },
+    { immutable: true }
 );
 
 //implemented soft-delete for users

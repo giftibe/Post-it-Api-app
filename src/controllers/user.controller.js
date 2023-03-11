@@ -3,6 +3,7 @@ const {
     getAUser,
     getAllUsers,
     updateAUser,
+    getByUserName,
     deleteAUser,
     getAUserByEmail,
 } = require('../services/user.service');
@@ -16,7 +17,11 @@ class userController {
     async createAUser(req, res) {
         try {
             const findAUser = await getAUserByEmail({ email: req.body.email });
-            if (!findAUser) {
+            const findUserName = await getByUserName({
+                username: req.body.username,
+            });
+
+            if (!findAUser && !findUserName) {
                 const saltRounds = 10;
                 const salt = await bcrypt.genSalt(saltRounds);
                 const hashedPassword = await bcrypt.hash(
@@ -33,6 +38,7 @@ class userController {
                             message: MESSAGES.REGISTERED,
                             success: true,
                             avatarURL: avatar,
+                            username: req.body.username,
                             token,
                         });
                     }
@@ -40,12 +46,13 @@ class userController {
                 const user = await createUser({
                     email: req.body.email,
                     password: hashedPassword,
+                    username: req.body.username,
                     avatarURL: avatar,
                 });
                 res.status(200).send(user);
             }
-            res.status(409).send({
-                message: 'exists alreadyy',
+            return res.status(409).send({
+                message: 'email or username exists already',
                 success: false,
             });
         } catch (err) {
@@ -59,25 +66,47 @@ class userController {
     //get a single user
     async fetchAUser(req, res) {
         try {
-            const { id } = req.params;
+            const inputId = req.params.id;
 
-            //check if the user to fetch exists
-            const existing = await getAUser(id);
+            const firstChar = inputId.charAt(0);
+            if (firstChar == '@') {
+                const removedAt = inputId.slice(1);
+                const strRemovedAt = '' + removedAt;
+
+                //check if the userName exists
+                const checkUserName = await getByUserName({ strRemovedAt });
+
+                if (checkUserName) {
+                    return res.status(200).send({
+                        message: 'found',
+                        success: true,
+                        checkUserName,
+                    });
+                } else {
+                    return res.status(404).send({
+                        message: 'username does not exist',
+                        success: false,
+                    });
+                }
+            }
+
+            //check if the userId to fetch exists
+            const existing = await getAUser(inputId);
             if (!existing) {
-                res.status(404).send({
-                    message: 'user does not exit',
+                return res.status(404).send({
+                    message: 'user does not exist',
                     success: false,
                 });
             }
-
-            res.status(200).json({
+            return res.status(200).send({
                 message: MESSAGES.FETCHED,
                 success: true,
                 existing,
             });
         } catch (err) {
-            res.status(500).send({
-                message: err.message || MESSAGES.ERROR,
+            return res.status(500).send({
+                message: err,
+                // .message || MESSAGES.ERROR,
                 success: false,
             });
         }
@@ -87,13 +116,13 @@ class userController {
     async fetchAllUser(req, res) {
         try {
             const data = await getAllUsers();
-            res.status(200).send({
+            return res.status(200).send({
                 message: MESSAGES.FETCHED,
                 success: true,
                 data,
             });
         } catch (err) {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });
@@ -110,20 +139,20 @@ class userController {
             const existing = await getAUser(id);
             if (!existing) {
                 return res.status(404).send({
-                    message: 'user does not exit',
+                    message: 'user does not exist',
                     success: false,
                 });
             }
 
             //if user exists, edit/put it
             const change = await updateAUser(id, updateData);
-            res.status(200).send({
+            return res.status(200).send({
                 message: MESSAGES.UPDATED,
                 success: true,
                 data: updateData,
             });
         } catch (err) {
-            res.status(401).send({
+            return res.status(401).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });
@@ -145,12 +174,12 @@ class userController {
             }
 
             await deleteAUser(id);
-            res.status(202).send({
+            return res.status(202).send({
                 message: MESSAGES.DELETED,
                 success: true,
             });
         } catch (err) {
-            res.status(500).send({
+            return res.status(500).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });
