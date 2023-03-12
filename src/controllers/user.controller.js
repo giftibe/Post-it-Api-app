@@ -11,9 +11,9 @@ const {
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const Users = require('../postit.models/user.model');
+const Users = require('../models/user.model');
 const { MESSAGES } = require('../messages/user.message');
-const generateRandomAvatar = require('../utils/avatar.js');
+const generateRandomAvatar = require('../middlewares/avatar.js');
 class userController {
     async createAUser(req, res) {
         try {
@@ -29,10 +29,19 @@ class userController {
                     req.body.password,
                     salt
                 );
-                const avatar = generateRandomAvatar(req.body.email);
+                // useMail = req.body.email;
+                // const imgValue = function (useMail) {
+                //     let strAva = generateRandomAvatar(userMail);
+                //     let _imageTag = `<img src="${strAva}" alt="A representation of the user as an avatar using the email.">`;
+                //     return _imageTag();
+                // };
 
+                const avatar = generateRandomAvatar(req.body.email);
+                let strAvatar = (await avatar).toString();
+                let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
+                // _imageTag(re);
                 jwt.sign(
-                    { email: req.body.email, password: hashedPassword },
+                    { email: req.body.email },
                     process.env.SECRET_KEY,
                     (error, token) => {
                         res.json({
@@ -40,6 +49,7 @@ class userController {
                             success: true,
                             avatarURL: avatar,
                             username: req.body.username,
+                            imgTag: _imageTag,
                             token,
                         });
                     }
@@ -48,7 +58,8 @@ class userController {
                     email: req.body.email,
                     password: hashedPassword,
                     username: req.body.username,
-                    avatarURL: avatar,
+                    avatarURL: strAvatar,
+                    imgTag: _imageTag,
                 });
                 res.status(200).send(user);
             }
@@ -128,7 +139,6 @@ class userController {
                 const idString = getId.toString();
 
                 if (checkUser) {
-
                     // find all the post with the userId
                     const getAllpostByUser = await getAllpostByUserName(
                         idString
@@ -174,7 +184,9 @@ class userController {
     async editAUser(req, res) {
         try {
             const { id } = req.params;
+
             const updateData = req.body;
+            let userMail = req.body.email;
 
             //check if the user to edit exist
             const existing = await getAUser(id);
@@ -184,12 +196,22 @@ class userController {
                     success: false,
                 });
             }
-
             //if user exists, edit/put it
-            const change = await updateAUser(id, updateData);
+            if (userMail) {
+                const avatar = generateRandomAvatar(req.body.email);
+                let strAvatar = (await avatar).toString();
+                let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
+                const change = await updateAUser(id, {
+                    email: req.body.email,
+                    username: req.body.username,
+                    avatarURL: strAvatar,
+                    imgTag: _imageTag,
+                });
+            }
             return res.status(200).send({
                 message: MESSAGES.UPDATED,
                 success: true,
+
                 data: updateData,
             });
         } catch (err) {

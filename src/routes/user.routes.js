@@ -1,5 +1,6 @@
 const express = require('express');
 const verify = require('../authorization/auth')
+const validate = require('../middlewares/joi')
 const router = express.Router();
 const {
     createAUser,
@@ -11,7 +12,7 @@ const {
 } = require('../controllers/user.controller');
 
 router.post('/users', createAUser);
-router.get('/users', fetchAllUser);
+router.get('/users', verify, fetchAllUser);
 router.get('/users/:id/posts', fetchAllpostByUserName);
 router.delete('/users/:id', DeleteAUser);
 router.get('/users/:id', fetchAUser);

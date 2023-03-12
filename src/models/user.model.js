@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const generateRandomAvatar = require('../utils/avatar.js');
+const generateRandomAvatar = require('../middlewares/avatar.js');
 const post = require('./post.model');
 const comment = require('./comment.model');
 const Schema = mongoose.Schema;
@@ -26,10 +26,14 @@ const userSchema = new Schema(
             trim: true,
             minlength: 1,
             maxlength: 10,
-            unique:true
+            unique: true,
         },
 
         avatarURL: {
+            type: String,
+        },
+
+        imgTag: {
             type: String,
         },
 
@@ -38,7 +42,8 @@ const userSchema = new Schema(
             default: false,
         },
     },
-    { immutable: true }
+    { immutable: true },
+    { timestamps: true }
 );
 
 //implemented soft-delete for users

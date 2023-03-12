@@ -40,24 +40,25 @@ class commentController {
         }
     }
 
-    async getAllCommentsWithId(req, res) {
+    async getAPostCommentsWithId(req, res) {
         try {
-            const { PostId } = req.params;
+            const id = req.params.PostId;
 
-            const checkId = await getAPost(PostId);
+            //Check if is valid
+            const checkId = await getAPost(id);
             if (!checkId) {
                 return res.status(404).send({
                     message: 'id not found',
                     success: false,
                 });
+            } else {
+                const comment = await getAllPostComment(id);
+                return res.status(201).send({
+                    message: MESSAGES.FETCHED,
+                    success: true,
+                    Comments: comment,
+                });
             }
-
-            const comment = await getAllPostComment(req.params.id);
-            return res.status(201).send({
-                message: MESSAGES.FETCHED,
-                success: true,
-                Comments: comment,
-            });
         } catch (err) {
             res.status(500).send({
                 message: err.message,
@@ -100,30 +101,33 @@ class commentController {
 
     async editAcomment(req, res) {
         try {
-            const { PostId } = req.params;
-            const { ComId } = req.params;
+            const UPostId = req.params.PostId;
+            const UComId = req.params.ComId;
+
             const updateComment = req.body;
 
             //check if the comment to edit exist
-            const validPostId = await getAPost(PostId);
-            const validComId = await getAComment(ComId);
+            const validPostId = await getAPost({ id: UPostId });
+            const validComId = await getAComment(UComId);
+
 
             if (!validPostId && !validComId) {
-                res.status(404).send({
+                return res.status(404).send({
                     message: 'invalid id',
                     success: false,
                 });
+            } else {
+                //if comment exists, edit/put it
+                const change = await updateAComment(UComId, updateComment);
+                
+                return res.status(200).send({
+                    message: MESSAGES.UPDATED,
+                    success: true,
+                    data: change,
+                });
             }
-
-            //if comment exists, edit/put it
-            const change = await updateAComment(ComId, updateComment);
-            res.status(200).send({
-                message: MESSAGES.UPDATED,
-                success: true,
-                data: change,
-            });
         } catch (err) {
-            res.status(401).send({
+            return res.status(401).send({
                 message: err.message || MESSAGES.ERROR,
                 success: false,
             });
