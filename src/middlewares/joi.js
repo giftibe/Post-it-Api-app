@@ -10,7 +10,7 @@ function validateUserJoi(req, res, next) {
 
     const { error, value } = joiUserSchema.validate(req.body);
     if (error) {
-        res.status(422).send({
+        return res.status(422).send({
             message: error,
             success: false,
         });
@@ -29,7 +29,7 @@ function validateUpdateJoi(req, res, next) {
 
     const { error, value } = UpdateSchema.validate(req.body);
     if (error) {
-        res.status(422).send({
+        return res.status(422).send({
             message: error,
             success: false,
         });
@@ -46,7 +46,7 @@ function validatePostJoi(req, res, next) {
 
     const { error, value } = postSchema.validate(req.body);
     if (error) {
-        res.status(422).send({
+        return res.status(422).send({
             message: error,
             success: false,
         });
@@ -63,7 +63,7 @@ function validateCommentJoi(req, res, next) {
 
     const { error, value } = commentSchema.validate(req.body);
     if (error) {
-        res.status(422).send({
+        return res.status(422).send({
             message: error,
             success: false,
         });

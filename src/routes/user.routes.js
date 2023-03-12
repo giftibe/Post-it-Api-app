@@ -12,7 +12,7 @@ const {
 } = require('../controllers/user.controller');
 
 router.post('/users', validateUserJoi, createAUser);
-router.get('/users', verify, fetchAllUser);
+router.get('/users', fetchAllUser);
 router.get('/users/:id/posts', fetchAllpostByUserName);
 router.delete('/users/:id', verify, DeleteAUser);
 router.get('/users/:id', fetchAUser);
