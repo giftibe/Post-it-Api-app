@@ -47,7 +47,7 @@ class userController {
                         res.json({
                             message: MESSAGES.REGISTERED,
                             success: true,
-                            avatarURL: avatar,
+                            avatarURL: _imageTag,
                             username: req.body.username,
                             imgTag: _imageTag,
                             token,
@@ -207,13 +207,20 @@ class userController {
                     avatarURL: strAvatar,
                     imgTag: _imageTag,
                 });
-            }
-            return res.status(200).send({
-                message: MESSAGES.UPDATED,
-                success: true,
 
-                data: updateData,
-            });
+                return res.status(200).send({
+                    message: MESSAGES.UPDATED,
+                    success: true,
+                    data: updateData,
+                });
+            } else {
+                const change = await updateAUser(id, updateData);
+                return res.status(200).send({
+                    message: MESSAGES.UPDATED,
+                    success: true,
+                    data: change,
+                });
+            }
         } catch (err) {
             return res.status(401).send({
                 message: err.message || MESSAGES.ERROR,
