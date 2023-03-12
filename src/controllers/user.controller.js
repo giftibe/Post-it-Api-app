@@ -35,11 +35,11 @@ class userController {
                 //     let _imageTag = `<img src="${strAva}" alt="A representation of the user as an avatar using the email.">`;
                 //     return _imageTag();
                 // };
-
+                // _imageTag(re);
                 const avatar = generateRandomAvatar(req.body.email);
                 let strAvatar = (await avatar).toString();
                 let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
-                // _imageTag(re);
+
                 jwt.sign(
                     { email: req.body.email },
                     process.env.SECRET_KEY,
