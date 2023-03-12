@@ -1,5 +1,5 @@
-const { Users } = require('../postit.models/user.model');
-const { post } = require('../postit.models/post.model');
+const { Users } = require('../models/user.model');
+
 const { getAllPost } = require('../services/post.service');
 
 class userService {
@@ -12,13 +12,13 @@ class userService {
         //fetch all users
         return await Users.find(
             { isDeleted: false },
-            { _id: 0, password: 0 }
+            { _id: 1, password: 0 }
         ).sort({ $natural: -1 });
     }
 
     async getAUser(id) {
         //get a single user by id
-        return await Users.findById(id, { _id: 0, password: 0 });
+        return await Users.findById(id, { _id: 1, password: 0 });
     }
 
     async getByUserName(data) {

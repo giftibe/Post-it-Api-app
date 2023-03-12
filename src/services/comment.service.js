@@ -1,4 +1,4 @@
-const { Comment } = require('../postit.models/comment.model');
+const { Comment } = require('../models/comment.model');
 class commentService {
     async createComment(data) {
         //to create a comment
@@ -7,7 +7,7 @@ class commentService {
 
     async getAllPostComment(id) {
         //this gets all the comment with a particular id arranged in its newest
-        return await Comment.find({ id: { $exists: true } }).sort({
+        return await Comment.find({ PostId: id }).sort({
             $natural: -1,
         });
     }

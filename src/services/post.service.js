@@ -1,4 +1,4 @@
-const { Post } = require('../postit.models/post.model');
+const { Post } = require('../models/post.model');
 
 class postService {
     async createPost(data) {
@@ -13,7 +13,7 @@ class postService {
 
     async getAPost(id) {
         //get a single postit by id
-        return await Post.findById(id);
+        return await Post.find(id);
     }
 
     async updateAPost(id, data) {
