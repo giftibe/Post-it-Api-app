@@ -10,8 +10,8 @@ function verifyToken(req, res, next) {
         req.token = bearToken;
         next();
     } else {
-        res.status(403).send({
-            message: err.message || 'MESSAGES.UNAUTHORIZED',
+        return res.status(403).send({
+            message: 'Unauthorized request',
             success: false,
         }); // Restricting access if authorization fails
     }

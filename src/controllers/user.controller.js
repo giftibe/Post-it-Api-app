@@ -17,6 +17,7 @@ const generateRandomAvatar = require('../middlewares/avatar.js');
 class userController {
     async createAUser(req, res) {
         try {
+            const inputbody = req.body;
             const findAUser = await getAUserByEmail({ email: req.body.email });
             const findUserName = await getByUserName({
                 username: req.body.username,
@@ -29,14 +30,9 @@ class userController {
                     req.body.password,
                     salt
                 );
-                // useMail = req.body.email;
-                // const imgValue = function (useMail) {
-                //     let strAva = generateRandomAvatar(userMail);
-                //     let _imageTag = `<img src="${strAva}" alt="A representation of the user as an avatar using the email.">`;
-                //     return _imageTag();
-                // };
-                // _imageTag(re);
+
                 const avatar = generateRandomAvatar(req.body.email);
+                console.log(avatar);
                 let strAvatar = (await avatar).toString();
                 let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
 
@@ -44,22 +40,24 @@ class userController {
                     { email: req.body.email },
                     process.env.SECRET_KEY,
                     (error, token) => {
-                        res.json({
+                        return res.json({
                             message: MESSAGES.REGISTERED,
                             success: true,
-                            avatarURL: _imageTag,
+                            email: req.body.email,
                             username: req.body.username,
+                            avatarURL: _imageTag,
                             imgTag: _imageTag,
                             token,
                         });
                     }
                 );
+
                 const user = await createUser({
-                    email: req.body.email,
-                    password: hashedPassword,
-                    username: req.body.username,
+                    ...req.body,
+
                     avatarURL: strAvatar,
                     imgTag: _imageTag,
+                    // token,
                 });
                 res.status(200).send(user);
             }
@@ -211,19 +209,18 @@ class userController {
                 return res.status(200).send({
                     message: MESSAGES.UPDATED,
                     success: true,
-                    data: updateData,
                 });
             } else {
-                const change = await updateAUser(id, updateData);
+                const change = await updateAUser(id, req.body);
                 return res.status(200).send({
                     message: MESSAGES.UPDATED,
                     success: true,
-                    data: change,
+                    data: req.body,
                 });
             }
         } catch (err) {
             return res.status(401).send({
-                message: err.message || MESSAGES.ERROR,
+                message: MESSAGES.ERROR + ': check id',
                 success: false,
             });
         }
@@ -237,11 +234,12 @@ class userController {
             //check if user to delete exist
             const existing = await getAUser(id);
             if (!existing) {
-                res.status(404).send({
+                return res.status(404).send({
                     message: MESSAGES.ABSENT,
                     success: false,
                 });
             }
+            
 
             await deleteAUser(id);
             return res.status(202).send({

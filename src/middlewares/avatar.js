@@ -1,5 +1,4 @@
 // @_learnable
-// const {email} = Users = require('../postit.models/user.model')
 const avatarStyles = [
     'adventurer',
     'adventurer-neutral',
@@ -29,19 +28,19 @@ const avatarStyles = [
 ];
 
 const getRandomAvatarStyle = () => {
-    // Got the length of the array
+    //get the length of the avatastyle array
     const arrayLength = avatarStyles.length;
-
     // Looped through the array and got a random string
     const avatarIndex = Math.floor(Math.random() * arrayLength);
     const randomString = avatarStyles[avatarIndex];
     return randomString;
 };
 
-const generateRandomAvatar = async(email) => {
+
+const generateRandomAvatar = async (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    const _email = email.replaceAll(' ', '');
+    const _email = email.trim();
 
     const isValidEmail = emailRegex.test(_email);
     if (!isValidEmail) {
@@ -49,20 +48,24 @@ const generateRandomAvatar = async(email) => {
     }
 
     const entropySource = () => Math.random().toString(36).substring(2, 7);
+
     const replaceAt = `-${entropySource()}-`;
     const replaceDot = `-${entropySource()}-`;
 
-    const seed = _email.replace('@', replaceAt).replaceAll('.', replaceDot);
+    const seed = _email.replace('@', replaceAt).replace(/\./g, replaceDot);
+
     const randomAvatarStyle = getRandomAvatarStyle();
 
     if (!randomAvatarStyle || !avatarStyles.includes(randomAvatarStyle)) {
-        console.error('Invalid avatar style');
+        // console.error('Invalid avatar style') // log this error to the console
+        throw new Error('Something failed: ');
     }
 
     const avatarUrl = `https://api.dicebear.com/5.x/${randomAvatarStyle}/svg?seed=${seed}&size=200&radius=50`;
 
     return avatarUrl;
-};
+}
+
 // @_learnable
 
 module.exports = generateRandomAvatar;

@@ -28,7 +28,7 @@ class userService {
 
     async getAUserByEmail(filter) {
         //get a single user by id
-        return await Users.findOne(filter, { _id: 0, password: 0 });
+        return await Users.findOne(filter, { _id: 1, password: 0 });
     }
 
     async getAllpostByUserName(filter) {
@@ -38,7 +38,7 @@ class userService {
 
     async updateAUser(id, data) {
         //update/replace a user by id
-        return await Users.findByIdAndUpdate(id, data);
+        return await Users.findByIdAndUpdate(id, data, { _id: 1, password: 0 });
     }
 
     async deleteAUser(id) {
