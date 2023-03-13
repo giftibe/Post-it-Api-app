@@ -84,6 +84,7 @@ My endpoints/resources:
  postman/thunderclient vscode extension
   
 ## deployed base link: https://postit-api-social-app.onrender.com
+  ## database design: https://dbdesigner.page.link/sFNz5W6PoZa4NzM7A
   
 
 
