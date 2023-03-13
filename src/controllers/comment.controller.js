@@ -154,11 +154,11 @@ class commentController {
         res.status(200).send({
             message: MESSAGES.DELETED,
             success: true,
-            change
+            
         });
     }
     catch(err) {
-        res.status(401).send({
+        return res.status(401).send({
             message: err.message || MESSAGES.ERROR,
             success: false,
         });

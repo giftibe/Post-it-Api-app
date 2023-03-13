@@ -2,7 +2,6 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const { getAUser } = require('../services/user.service');
 
-
 function AuthUser(req, res, next) {
     const bearHeader = req.headers['authorization'];
     if (typeof bearHeader !== 'undefined') {
