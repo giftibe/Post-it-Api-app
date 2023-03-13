@@ -1,6 +1,5 @@
 # Post-it-Api-app
-A social media app
-Hotel management API using Javascript which includes validation, authentication and authorization leveraging on bcryptjs, joi, and jsonwebtoken(jwt) technologies
+A social media API using Javascript which includes validation, authentication and authorization leveraging on bcryptjs, joi, and jsonwebtoken(jwt) technologies
 
 
 ## Table of Contents
@@ -37,6 +36,7 @@ Hotel management API using Javascript which includes validation, authentication 
 
 ## Features
 My endpoints/resources can look like this:
+
 Postits resource: /posts
 [ POST: create a new postit]  /posts
 [ GET: get all postits]  /posts
