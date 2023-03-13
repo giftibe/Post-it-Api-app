@@ -35,37 +35,38 @@ A social media API using Javascript which includes validation, authentication an
 
 
 ## Features
-My endpoints/resources can look like this:
+My endpoints/resources:
 
-Postits resource: /posts
-[ POST: create a new postit]  /posts
-[ GET: get all postits]  /posts
-[ GET: get a single postit] /posts/<id>
-[ PUT: update or replace a postit] /posts/<id>
-[ DELETE: delete a postit] /posts/<id>
+## Postits resource: /posts
+- POST: {baseUrl}/posts = create a new postit
+- GET: {baseUrl}/posts = get all postits 
+- GET:  {baseUrl}/posts/<id> = get a single postit
+- PUT: {baseUrl}/posts/<id> = update or replace a postit 
+- DELETE: {baseUrl}/posts/<id> delete a postit 
 
   
-Comment resource: /comments
-[POST: create a comment under the postit with the postit id of <postId> ] /posts/<postId>/comments
-[GET: Get comments under the postit with the post id of <postId> ] /posts/<postId>/comments
-[GET: Get a single comment with the comment id of <id> under the postit with the postit id of <postId> ] /posts/<postId>/comments/<id>
-[PUT: Update a single comment with the comment id of <id> under the postit with the postit id of <postId> ] /posts/<postId>/comments/<id>
-
-Comment resource: /comments
-[POST: create a comment under the postit with the postit id of <postId> ] /posts/<postId>/comments
-[GET: Get comments under the postit with the post id of <postId> ] /posts/<postId>/comments
-[GET: Get a single comment with the comment id of <id> under the postit with the postit id of <postId> ] /posts/<postId>/comments/<id>
-[PUT: Update a single comment with the comment id of <id> under the postit with the postit id of <postId> ] /posts/<postId>/comments/<id>
-
-User resource: /users 
-[ POST: create a new user]  /users
-[ GET: get all users]  /users
-[ GET: get a single user] /users/<id>
-[ PUT: update or replace users] /users/<id>
-[ DELETE: delete a user] /user/<id>
+## Comment resource: /comments
+- POST: {baseUrl}/api/v1//posts/<postId>/comments = create a comment under the postit with the postit id of <postId> 
+- GET: {baseUrl}/api/v1//posts/<postId>/comments/posts/<postId>/comments = Get comments under the postit with the post id of <postId>
+- GET:  {baseUrl}/posts/<postId>/comments/<id> = Get a single comment with the comment id of <id> under the postit with the postit id of <postId> 
+- PUT: {baseUrl}/posts/<postId>/comments/<id> = Update a single comment with the comment id of <id> under the postit with the postit id of <postId> 
   
-/users/@<user-postit-handle>
-/users/@<user-postit-handle>/posts
+## Comment resource: /comments
+- POST:  {baseUrl}/posts/<postId>/comments create a comment under the postit with the postit id of <postId>  
+- GET: {baseUrl}/posts/<postId>/comments = Get comments under the postit with the post id of <postId>  
+- GET: {baseUrl}/posts/<postId>/comments/<id> = Get a single comment with the comment id of <id> under the postit with the postit id of <postId> 
+- PUT: {baseUrl}/posts/<postId>/comments/<id> = Update a single comment with the comment id of <id> under the postit with the postit id of <postId>   
+
+## User resource: /users 
+- POST: {baseUrl}/users = create a new user
+- GET: {baseUrl}/users = get all users
+- GET: {baseUrl}/users/<id> = get a single user
+- PUT: {baseUrl}/users/<id> = update or replace users
+- DELETE: {baseUrl}/user/<id> = delete a user
+  
+ ## Unique routes
+- {baseUrl}/users/@<user-postit-handle> to get user with handle
+- {baseUrl}/users/@<user-postit-handle>/posts  to get a users posts
 
 
 - use of joi for validation of data request 
