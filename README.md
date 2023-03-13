@@ -83,7 +83,7 @@ My endpoints/resources:
 `npm start ` or `nodemon`
  postman/thunderclient vscode extension
   
-## deployed base link https://postit-api.onrender.com
+## deployed base link: https://postit-api-social-app.onrender.com
   
 
 
