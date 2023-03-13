@@ -29,25 +29,4 @@ const verifyToken = async (req, res, next) => {
         return res.status(401).send('Invalid bearToken');
     }
 };
-
-
-
-function verifyInputToken(req, res, next) {
-    const bearHeader = req.headers['authorization'];
-    if (typeof bearHeader !== 'undefined') {
-        const bearToken = bearHeader.split(' ')[1];
-        req.token = bearToken;
-        next();
-    } else {
-        return res.status(403).send({
-            message: 'Unauthorized request',
-            success: false,
-        }); // Restricting access if authorization fails
-    }
-}
 module.exports = verifyToken;
-
-// module.exports = verifyToken;
-
-//=========
-// Middleware to verify JWT

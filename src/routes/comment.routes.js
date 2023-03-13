@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { validateCommentJoi } = require('../middlewares/joi');
-const verify = require('../authorization/auth');
+const verify = require('../authorization/signInAuth');
 const {
     createAcomment,
     getAPostCommentsWithId,

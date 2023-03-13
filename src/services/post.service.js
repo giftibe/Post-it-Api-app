@@ -13,7 +13,7 @@ class postService {
 
     async getAPost(id) {
         //get a single postit by id
-        return await Post.find(id);
+        return await Post.findById(id);
     }
 
     async updateAPost(id, data) {
