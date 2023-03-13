@@ -17,7 +17,7 @@ const generateRandomAvatar = require('../middlewares/avatar.js');
 class userController {
     async createAUser(req, res) {
         try {
-            const inputbody = req.body;
+            // const email = req.body.email;
             const findAUser = await getAUserByEmail({ email: req.body.email });
             const findUserName = await getByUserName({
                 username: req.body.username,
@@ -32,34 +32,30 @@ class userController {
                 );
 
                 const avatar = generateRandomAvatar(req.body.email);
-                console.log(avatar);
                 let strAvatar = (await avatar).toString();
                 let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
-
-                jwt.sign(
-                    { email: req.body.email },
-                    process.env.SECRET_KEY,
-                    (error, token) => {
-                        return res.json({
-                            message: MESSAGES.REGISTERED,
-                            success: true,
-                            email: req.body.email,
-                            username: req.body.username,
-                            avatarURL: _imageTag,
-                            imgTag: _imageTag,
-                            token,
-                        });
-                    }
-                );
+                const token = jwt.sign(req.body.email, process.env.SECRET_KEY);
 
                 const user = await createUser({
-                    ...req.body,
-
-                    avatarURL: strAvatar,
+                    email: req.body.email,
+                    username: req.body.username,
+                    password: hashedPassword,
+                    avatarURL: _imageTag,
                     imgTag: _imageTag,
-                    // token,
+                    token,
                 });
-                res.status(200).send(user);
+                const result = {
+                    email: req.body.email,
+                    username: req.body.username,
+                    avatarURL: _imageTag,
+                    imgTag: _imageTag,
+                    token,
+                };
+                return res.status(201).send({
+                    message: 'MESSAGES.CREATED',
+                    success: true,
+                    result,
+                });
             }
             return res.status(409).send({
                 message: 'email or username exists already',
@@ -239,7 +235,6 @@ class userController {
                     success: false,
                 });
             }
-            
 
             await deleteAUser(id);
             return res.status(202).send({
