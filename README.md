@@ -86,7 +86,7 @@ My endpoints/resources:
 ## deployed base link: https://postit-api-social-app.onrender.com
   ## database design: https://dbdesigner.page.link/sFNz5W6PoZa4NzM7A
   
-  - soft-delete was implement by resetting a field called isDeleted which is false at default to true and when called.
+  - soft-delete was implemented by resetting a field called isDeleted which is false at default, to true and when called. Hence, on request of lists of particular resources, a filter is passed to only return all resources except those having the field(isDeleted) to be true.
 
 
 ## Acknowledgements
