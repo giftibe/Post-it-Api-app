@@ -13,9 +13,7 @@ A social media API using Javascript which includes validation, authentication an
 
 
 ## General Information
-- A hotel management api use for determinine the prices, and features of hotel room and at carious prices.
-- Helps in creation of hotel rooms, allocating various price and features/names to each room using its unique id
-- The purpose of this project to bring in technology in solving the problem of item availables room and price in a hotel
+Postit is a social media app that allows users to share postits, connect with friends, and join communities based on shared interests. resources include users. comments, postits.
 
 ## Technologies Used
 -  "node" 
