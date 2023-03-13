@@ -10,10 +10,9 @@ const {
 } = require('../services/user.service');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
-const Users = require('../models/user.model');
 const { MESSAGES } = require('../messages/user.message');
 const generateRandomAvatar = require('../middlewares/avatar.js');
+
 class userController {
     async createAUser(req, res) {
         try {

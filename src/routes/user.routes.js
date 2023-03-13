@@ -1,5 +1,5 @@
 const express = require('express');
-const reqAuth = require('../authorization/reqAuth');
+const reqAuth = require('../authorization/signInAuth');
 const { validateUserJoi, validateUpdateJoi } = require('../middlewares/joi');
 const router = express.Router();
 const {
@@ -18,7 +18,7 @@ router.delete('/users/:id', reqAuth, DeleteAUser);
 router.get('/users/:id', fetchAUser);
 router.put('/users/:id', validateUpdateJoi, editAUser);
 router.use('/docs', (req, res) => {
-    res.redirect('https://www.google.com');
+    res.redirect('https://documenter.getpostman.com/view/24128572/2s93JusNJv');
 });
 
 module.exports = router;
