@@ -81,6 +81,11 @@ My endpoints/resources:
 `npm start ` or `nodemon`
  postman/thunderclient vscode extension
   
+. input the web url on postman, whcich services as the base url.
+. set route and execute request
+
+
+  
 ## deployed base link: https://postit-api-social-app.onrender.com
   ## database design: https://dbdesigner.page.link/sFNz5W6PoZa4NzM7A
   
