@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const user = require('./user.model')
+const user = require('../models/user.model');
 
 const postSchema = new Schema(
     {
@@ -15,16 +15,15 @@ const postSchema = new Schema(
 
         UserId: {
             type: Schema.Types.ObjectId,
-            ref: 'user',
+            ref: "user",
         },
-        
+
         isDeleted: {
             type: Boolean,
             default: false,
         },
     },
-    { timestamps: true },
-    { minimize: false }
+    { timestamps: true }
 );
 
 //implemented soft-delete for post

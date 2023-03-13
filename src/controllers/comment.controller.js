@@ -11,8 +11,9 @@ const { MESSAGES } = require('../messages/comment.message');
 class commentController {
     async createAcomment(req, res) {
         try {
-            const { PostId } = req.params;
+            const PostId = req.params.PostId;
             const checkId = await getAPost(PostId);
+
             if (!checkId) {
                 return res.status(404).send({
                     message: 'id not found',
@@ -78,7 +79,7 @@ class commentController {
             const validComId = await getAComment(ComId);
 
             if (!validPostId && !validComId) {
-                res.status(404).send({
+                return res.status(404).send({
                     message: 'invalid id',
                     success: true,
                 });
@@ -103,13 +104,12 @@ class commentController {
         try {
             const UPostId = req.params.PostId;
             const UComId = req.params.ComId;
-
             const updateComment = req.body;
 
             //check if the comment to edit exist
-            const validPostId = await getAPost({ id: UPostId });
-            const validComId = await getAComment(UComId);
 
+            const validPostId = await getAPost(UPostId);
+            const validComId = await getAComment(UComId);
 
             if (!validPostId && !validComId) {
                 return res.status(404).send({
@@ -119,11 +119,11 @@ class commentController {
             } else {
                 //if comment exists, edit/put it
                 const change = await updateAComment(UComId, updateComment);
-                
+
                 return res.status(200).send({
                     message: MESSAGES.UPDATED,
                     success: true,
-                    data: change,
+                    update: updateComment,
                 });
             }
         } catch (err) {
@@ -154,6 +154,7 @@ class commentController {
         res.status(200).send({
             message: MESSAGES.DELETED,
             success: true,
+            change
         });
     }
     catch(err) {

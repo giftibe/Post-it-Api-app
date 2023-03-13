@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { validatePostJoi } = require('../middlewares/joi');
-const verify = require('../authorization/auth');
+const AuthUser = require('../authorization/signInAuth');
 const commentRoute = require('./comment.routes');
 const {
     createAPostit,
@@ -11,11 +11,11 @@ const {
     DeleteAPost,
 } = require('../controllers/post.controller');
 
-router.post('/', verify, validatePostJoi, createAPostit);
+router.post('/', AuthUser, validatePostJoi, createAPostit);
 router.get('/:id', getPostitById);
-router.put('/:id', verify, validatePostJoi, editAPostit);
+router.put('/:id', AuthUser, editAPostit);
 router.get('/', getAllPostit);
-router.delete('/:id',verify, DeleteAPost);
+router.delete('/:id', AuthUser, DeleteAPost);
 router.use(commentRoute);
 
 module.exports = router;

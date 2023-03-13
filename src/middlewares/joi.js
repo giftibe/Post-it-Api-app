@@ -41,7 +41,8 @@ function validateUpdateJoi(req, res, next) {
 //validates input for post
 function validatePostJoi(req, res, next) {
     const postSchema = Joi.object({
-        postit: Joi.string().alphanum().min(1).max(250),
+        postit: Joi.string().min(1).max(250),
+        UserId:Joi.string()
     });
 
     const { error, value } = postSchema.validate(req.body);
@@ -58,7 +59,8 @@ function validatePostJoi(req, res, next) {
 //validates input for comment
 function validateCommentJoi(req, res, next) {
     const commentSchema = Joi.object({
-        comments: Joi.string().alphanum().min(1).max(250),
+        comments: Joi.string().min(1).max(250),
+        UserId:Joi.string()
     });
 
     const { error, value } = commentSchema.validate(req.body);

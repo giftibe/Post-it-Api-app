@@ -6,6 +6,7 @@ const {
     deleteAPost,
 } = require('../services/post.service');
 const { MESSAGES } = require('../messages/post.message');
+const { getAUser } = require('../services/user.service');
 
 class postController {
     async createAPostit(req, res) {
@@ -60,12 +61,19 @@ class postController {
 
     async editAPostit(req, res) {
         try {
-            const { id } = req.params;
+            const id = req.params.id;
             const updatePostit = req.body;
 
             //check if the postit to edit exist
             const existing = await getAPost(id);
             if (!existing) {
+                const change = await updateAPost(id, updatePostit);
+                return res.status(200).send({
+                    message: MESSAGES.UPDATED,
+                    success: true,
+                    data: updatePostit,
+                });
+            } else {
                 return res.status(404).send({
                     message: MESSAGES.ABSENT,
                     success: false,
@@ -73,12 +81,6 @@ class postController {
             }
 
             //if postit exists, edit/put it
-            const change = await updateAPost(id, updatePostit);
-            res.status(200).send({
-                message: MESSAGES.UPDATED,
-                success: true,
-                data: updatePostit,
-            });
         } catch (err) {
             res.status(401).send({
                 message: MESSAGES.ERROR,
@@ -89,22 +91,22 @@ class postController {
 
     async DeleteAPost(req, res) {
         try {
-            const { id } = req.params;
+            const id = req.params.id;
 
             //check if postit to delete exist
             const existing = await getAPost(id);
             if (!existing) {
+                await deleteAPost(id);
+                res.status(202).send({
+                    message: MESSAGES.DELETED,
+                    success: true,
+                });
+            } else {
                 return res.status(404).send({
                     message: MESSAGES.ABSENT,
                     success: false,
                 });
             }
-
-            await deleteAPost(id);
-            res.status(202).send({
-                message: MESSAGES.DELETED,
-                success: true,
-            });
         } catch (err) {
             return res.status(500).send({
                 message: err.message || MESSAGES.ERROR,
