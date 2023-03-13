@@ -17,7 +17,7 @@ router.get('/users/:id/posts', fetchAllpostByUserName);
 router.delete('/users/:id', reqAuth, DeleteAUser);
 router.get('/users/:id', fetchAUser);
 router.put('/users/:id', validateUpdateJoi, editAUser);
-router.use('/docs', (req, res) => {
+router.get('/docs', (req, res) => {
     res.redirect('https://documenter.getpostman.com/view/24128572/2s93JusNJv');
 });
 
