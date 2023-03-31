@@ -28,6 +28,7 @@ Postit is a social media app that allows users to share postits, connect with fr
 -  "bcrypt": "^5.1.0"
 -  "express-async-handler": "^1.2.0",
 -  "joi": "^17.7.1",
+-  "multer": "^1.4.5-lts.1",
 -  "jsonwebtoken": "^9.0.0",
 
 
