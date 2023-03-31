@@ -93,7 +93,7 @@ My endpoints/resources:
 
 
 ## Acknowledgements
-- This project was inspired by Genesys Tech Hub/Laearnable 23
+- This project was inspired by Genesys Tech Hub/Learnable 23
 - Many thanks to all who made this possible continue to do so as we build
 
 ## Contact
