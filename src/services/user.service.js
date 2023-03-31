@@ -5,7 +5,7 @@ const { getAllPost } = require('../services/post.service');
 class userService {
     async createUser(data) {
         //to create a user
-        return await Users.create(data);
+        return await Users.create(data, { _id: 1, password: 0 });
     }
 
     async getAllUsers() {

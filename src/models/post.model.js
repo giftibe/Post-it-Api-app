@@ -22,6 +22,11 @@ const postSchema = new Schema(
             type: Boolean,
             default: false,
         },
+
+          title: { type: String },
+  description: { type: String },
+  filename: { type: String },
+  contentType: { type: String }
     },
     { timestamps: true }
 );
