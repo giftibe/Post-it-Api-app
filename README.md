@@ -62,6 +62,9 @@ My endpoints/resources:
 - GET: {baseUrl}/users/<id> = get a single user
 - PUT: {baseUrl}/users/<id> = update or replace users
 - DELETE: {baseUrl}/user/<id> = delete a user
+
+## upload image: /user
+- POST: {baseUrl}/users/upload = to upload an image
   
  ## Unique routes
 - {baseUrl}/users/@<user-postit-handle> to get user with handle
