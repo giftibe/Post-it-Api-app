@@ -5,7 +5,7 @@ const { getAllPost } = require('../services/post.service');
 class userService {
     async createUser(data) {
         //to create a user
-        return await Users.create(data, { _id: 1, password: 0 });
+        return await Users.create(data);
     }
 
     async getAllUsers() {
@@ -24,6 +24,11 @@ class userService {
     async getByUserName(data) {
         //get a single user by userName
         return await Users.findOne(data, { _id: 1, password: 0 });
+    }
+
+    async checkUser({data}) {
+        //get a single user 
+        return await Users.findOne(data);
     }
 
     async getAUserByEmail(filter) {
