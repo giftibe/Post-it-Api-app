@@ -30,6 +30,9 @@ Postit is a social media app that allows users to share postits, connect with fr
 -  "joi": "^17.7.1",
 -  "multer": "^1.4.5-lts.1",
 -  "jsonwebtoken": "^9.0.0",
+-  "express-session": "^1.17.3",
+-  "connect-mongodb-session": "^3.1.1",  
+-  "multer": "^1.4.5-lts.1"
 
 
 
