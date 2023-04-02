@@ -2,6 +2,7 @@ const {
     createUser,
     getAUser,
     getAllUsers,
+    checkUser,
     updateAUser,
     getByUserName,
     deleteAUser,
@@ -13,6 +14,7 @@ const jwt = require('jsonwebtoken');
 const { MESSAGES } = require('../messages/user.message');
 const generateRandomAvatar = require('../middlewares/avatar.js');
 
+
 class userController {
     async createAUser(req, res) {
         try {
@@ -21,6 +23,7 @@ class userController {
             const findUserName = await getByUserName({
                 username: req.body.username,
             });
+
 
             if (!findAUser && !findUserName) {
                 const saltRounds = 10;
@@ -35,31 +38,33 @@ class userController {
                 let _imageTag = `<img src="${strAvatar}" alt="A representation of the user as an avatar using the email.">`;
                 const token = jwt.sign(req.body.email, process.env.SECRET_KEY);
 
-                const user = await createUser({
+                await createUser({
                     email: req.body.email,
                     username: req.body.username,
                     password: hashedPassword,
-                    avatarURL: _imageTag,
+                    avatarURL: strAvatar,
                     imgTag: _imageTag,
                     token,
-                });
-                const result = {
-                    email: req.body.email,
-                    username: req.body.username,
-                    avatarURL: _imageTag,
-                    imgTag: _imageTag,
-                    token,
-                };
-                return res.status(201).send({
-                    message: 'MESSAGES.CREATED',
+                })
+
+                return res.status(200).send({
+                    message: MESSAGES.CREATED,
                     success: true,
-                    result,
+                    result: {
+                        email: req.body.email,
+                        username: req.body.username,
+                        avatarURL: strAvatar,
+                        imgTag: _imageTag,
+                        token,
+                    }
+                });
+
+            } else {
+                return res.status(409).send({
+                    message: 'email or username exists already',
+                    success: false,
                 });
             }
-            return res.status(409).send({
-                message: 'email or username exists already',
-                success: false,
-            });
         } catch (err) {
             return {
                 message: err.message,
@@ -67,6 +72,63 @@ class userController {
             };
         }
     }
+
+
+    //login a user
+    async login(req, res) {
+        const { email, password } = req.body
+
+        const user = await checkUser(email)
+        if (!user) {
+            return res.status(403).send({
+                sucess: false,
+                message: MESSAGES.W_EMAIL
+            })
+        }
+
+        const checkPassword = await bcrypt.compare(password, user.password)
+        if (!checkPassword) {
+            return res.status(403).send({
+                succcess: true,
+                message: MESSAGES.PASSWORD
+            })
+
+        }
+        else if (user && checkPassword) {
+            req.session.user = {
+                id: user.id,
+                email: user.email,
+                password: user.password
+            }
+            return res.status(200).send({
+                sucess: true,
+                message: MESSAGES.LOGGEDIN
+            })
+        }
+        else {
+            return res.status(500).send({
+                sucess: true,
+                message: MESSAGES.ERROR
+            })
+        }
+    }
+
+    //logout a user
+    async logout(req, res) {
+        try {
+            req.session.destroy()
+            return res.status(200).send({
+                sucess: true,
+                message: MESSAGES.LOGGEDOUT
+            })
+        } catch {
+            return res.status(500).send({
+                sucess: true,
+                message: MESSAGES.ERROR
+            })
+        }
+    }
+
 
     //get a single user
     async fetchAUser(req, res) {
